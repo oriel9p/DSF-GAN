@@ -3,3 +3,5 @@ preprocessing.ipynb
 .ipynb_checkpoints
 venv_
 .xml
+__pycache__
+.idea
