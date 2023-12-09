@@ -13,11 +13,12 @@ from sklearn.linear_model import LogisticRegression, LinearRegression
 
 
 class DSFGAN(CTGAN):
-    def __init__(self, feedback_type, val_set, n_train, feedback_model=None, verbose=True, epochs=100, batch_size=500):
+    def __init__(self, feedback_type, val_set, n_train, feedback_model=None, verbose=True,lambd=1, epochs=100, batch_size=500):
         print("Creating DSFGAN Object, Inherits from CTGAN")
         super().__init__(epochs=epochs, batch_size=batch_size, verbose=verbose,)
         self.feedback_type = feedback_type  # 'Regression', 'Classification
         self.val_set = val_set
+        self.lambd = lambd
         self.feedback_model = feedback_model
         self.n_train = n_train
 
@@ -188,11 +189,11 @@ class DSFGAN(CTGAN):
                     if self.feedback_type == "regression":
                         y_pred = self.feedback_model.predict(x_true)
                         # RMSE for regression
-                        loss_g = -torch.mean(y_fake) + cross_entropy + np.sqrt(np.mean(y_true - y_pred))
+                        loss_g = -torch.mean(y_fake) + cross_entropy + self.lambd * np.sqrt(np.mean(y_true - y_pred)**2)
                     else:
                         y_pred = self.feedback_model.predict_proba(x_true)[:, 1]
                         # Log loss for classification
-                        loss_g = -torch.mean(y_fake) + cross_entropy - np.sum(y_true * np.log(y_pred) + (1 - y_true)
+                        loss_g = -torch.mean(y_fake) + cross_entropy - self.lambd * np.sum(y_true * np.log(y_pred) + (1 - y_true)
                                                                               * np.log(1 - y_pred)) / len(y_true)
 
                 optimizerG.zero_grad(set_to_none=False)

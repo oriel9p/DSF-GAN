@@ -1,7 +1,8 @@
 datasets
-preprocessing.ipynb
 .ipynb_checkpoints
 venv_
 .xml
 __pycache__/
 .idea/
+trained_models/
+sampled/
