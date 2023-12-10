@@ -6,3 +6,4 @@ __pycache__/
 .idea/
 trained_models/
 sampled/
+.gitignore
