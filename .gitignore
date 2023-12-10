@@ -4,6 +4,6 @@ venv_
 .xml
 __pycache__/
 .idea/
-trained_models/
-sampled/
+trained_models
+sampled
 .gitignore
